@@ -1,4 +1,3 @@
-from email import policy
 import numpy as np
 from Env import GridEnv
 gamma = 0.9
@@ -37,7 +36,7 @@ class StateValue():
 
 env = GridEnv()
 v_table = StateValue(env.H, env.W)
-max_iteration = 1000
+max_iteration = 2000
 episode_num = 100
 for i in range(max_iteration):
     for j in range(episode_num):
