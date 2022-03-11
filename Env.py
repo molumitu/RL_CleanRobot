@@ -5,7 +5,7 @@ class GridEnv(gym.Env):
     def __init__(self, seed=0) -> None:
         self.H = 4
         self.W = 4
-        self.move_option = np.array([[0,1], [-1,0], [0,-1], [1,0]]) #top, left, down, right
+        self.move_option = np.array([[0,1], [-1,0], [0,-1], [1,0]]) #right,top, left, down
         self.action_num = 4
         self.rng = np.random.default_rng(seed=seed)
         self.obs = self.reset()
