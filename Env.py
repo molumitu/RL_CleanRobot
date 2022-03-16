@@ -2,7 +2,7 @@ import gym
 import numpy as np
 
 class GridEnv(gym.Env):
-    def __init__(self, seed=0) -> None:
+    def __init__(self, seed=37) -> None:
         self.H = 4
         self.W = 4
         self.move_option = np.array([[0,1], [-1,0], [0,-1], [1,0]]) #right,top, left, down
