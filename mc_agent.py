@@ -1,6 +1,6 @@
 import numpy as np
 from Env import GridEnv
-gamma = 0.9
+gamma = 1
 import copy
 
 def cumulative_return(rewards, gamma):
@@ -31,9 +31,11 @@ class StateValue():
         print(self.v)
 
     def check_convergence(self):
-        pass
+        done = np.allclose(self.v, self.tem_v, atol=0.1)
+        self.tem_v = self.v.copy()
+        return done
         
-
+    
 env = GridEnv()
 v_table = StateValue(env.H, env.W)
 max_iteration = 2000
@@ -57,6 +59,7 @@ for i in range(max_iteration):
             step += 1
     v_table.render()
     if v_table.check_convergence():
+        print("R_avg=", np.sum(v_table.v)/(env.H*env.W - 1))
         break
     
 
