@@ -1,5 +1,4 @@
 
-from matplotlib.pyplot import axis
 from Env import GridEnv
 import numpy as np
 
@@ -7,7 +6,9 @@ import numpy as np
 
 class ActionValue:
     def __init__(self, H, W, action_num, seed=1) -> None:
-        self.q = np.zeros((H, W, action_num))
+        self.action_num = action_num
+        self.q = np.zeros((H, W, self.action_num))
+        self.tem_q = self.q.copy()
         self.alpha = 0.5
         self.gamma = 0.9
 
@@ -19,19 +20,30 @@ class ActionValue:
 
     def render(self):
         print(np.argmax(self.q, axis=-1))
+        print(self.q.reshape(-1, self.action_num))
+        print(self.tem_q.reshape(-1, self.action_num))
 
-max_iteration = 200
-episode_num = 100
+    def check_convergence(self):
+        done = np.allclose(self.q, self.tem_q, atol=0.0001)
+        self.tem_q = self.q.copy()
+        return done
+
+
+max_iteration = 20000
+episode_num = 1000
 env = GridEnv()
-q = ActionValue(env.H, env.W, env.action_num)
+q_table = ActionValue(env.H, env.W, env.action_num)
 for i in range(max_iteration):
-    for i in range(episode_num):
+    for j in range(episode_num):
         obs = env.reset()
-        action = q.get_action(obs)
+        action = q_table.get_action(obs)
         next_obs, reward, done, info = env.step(action)
-        q.update(obs, action, reward, next_obs)
+        q_table.update(obs, action, reward, next_obs)
         if done:
             break
-    q.render()
+    if q_table.check_convergence():
+        # print("R_avg=", np.sum(q_table.q)/(env.H*env.W - 1))
+        q_table.render()
+        break
 
     
