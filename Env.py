@@ -16,6 +16,9 @@ class GridEnv(gym.Env):
 
         return self.obs.copy()
 
+    def set_obs(self, obs):
+        self.obs = obs
+
     def step(self, action):
         P_action_random =  self.rng.uniform(0,1)
         if P_action_random < 0.1:
